@@ -1,2 +1,2 @@
 # carrito
-Trabajo Pr√†ctico Taller de Programaci√≥n II JAVA
+Trabajo Pr·ctico Taller de ProgramaciÛn II JAVA
