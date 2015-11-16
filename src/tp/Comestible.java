@@ -1,22 +1,24 @@
 package tp;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public class Comestible extends Producto {
 
-	public Comestible(String nombre, String codigo, double precio) {
-		super(nombre, codigo, precio);
-		
-	}
+	public Comestible(String nombre, String codigo, double precio,int stock, LocalDate fechaVencimiento,double peso) {
+		super(nombre, codigo, precio,stock);
+		this.fechaVencimiento = fechaVencimiento;
+		this.peso = peso;
+	}//constructor
 	
-	private Date fechaVencimiento;
+	private LocalDate fechaVencimiento;
 	private double peso;
 	
 	//getters and setters
-	public Date getFechaVencimiento() {
+	public LocalDate getFechaVencimiento() {
 		return fechaVencimiento;
 	}
-	public void setFechaVencimiento(Date fechaVencimiento) {
+	public void setFechaVencimiento(LocalDate fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
 	}
 	public double getPeso() {

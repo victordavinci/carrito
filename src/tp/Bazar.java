@@ -2,22 +2,32 @@ package tp;
 
 public class Bazar extends Producto {
 
-	public Bazar(String nombre, String codigo, double precio) {
-		super(nombre, codigo, precio);
-		// TODO Auto-generated constructor stub
-	}
+	private String descripcion;
+	private int garantia;
+//	private String texto;
+	private TipoBazar tipoBazar;
 	
-	private String texto;
+     //constructor
+	public Bazar(String nombre, String codigo, double precio, int stock, String descripcion,TipoBazar tipoBazar) {
+		super(nombre, codigo, precio,stock);
+		this.descripcion = descripcion;
+		this.tipoBazar = tipoBazar;
+	}//fin de constructor
+	
 	
 	//getters and setters
-	public String getTexto() {
-		return texto;
+	public String getDescripcion() {
+		return descripcion;
 	}
-
-	public void setTexto(String texto) {
-		this.texto = texto;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 	
+	public TipoBazar getTipoBazar() {
+		return tipoBazar;
+	}
+	public void setTipoBazar(TipoBazar tipoBazar) {
+		this.tipoBazar = tipoBazar;
+	}
 	
-
 }//fin de la clase Bazar

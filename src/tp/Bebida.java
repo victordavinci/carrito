@@ -1,32 +1,33 @@
 package tp;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public class Bebida extends Producto{
 	/*Encapsulamiento y
 	constructor*/
-	public Bebida(String nombre, String codigo, double precio, Date fechaVencimiento, double 
+	public Bebida(String nombre, String codigo, double precio,int stock, LocalDate fechaVencimiento, double 
 			volumen, boolean ret, boolean alc) {
-		super(nombre, codigo, precio);
+		super(nombre, codigo, precio,stock);
 		this.fechaVencimiento = fechaVencimiento;
 		this.volumen = volumen;
 		this.isRetornable = ret;
 		this.isAlcoholica = alc;
 	}//constructor
-	private Date fechaVencimiento;
 	
+	private LocalDate fechaVencimiento;
 	private double volumen;
 	private boolean isRetornable;
 	private boolean isAlcoholica;
 	
 	////getters and setters
-	public Date getFechaVencimiento() {
+	public LocalDate getFechaVencimiento() {
 		return fechaVencimiento;
 	}
-	public void setFechaVencimiento(Date fechaVencimiento) {
+	public void setFechaVencimiento(LocalDate fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
 	}
-	public int getVolumen() {
+	public double getVolumen() {
 		return volumen;
 	}
 	public void setVolumen(int volumen) {

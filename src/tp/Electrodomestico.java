@@ -2,20 +2,23 @@ package tp;
 
 public class Electrodomestico extends Producto {
 
-	public Electrodomestico(String nombre, String codigo, double precio) {
-		super(nombre, codigo, precio);
-		// TODO Auto-generated constructor stub
-	}
+	/*Encapsulamiento y
+	constructor*/
+	public Electrodomestico(String nombre, String codigo, double precio,int stock, int perGarantia, String descripcion) {
+		super(nombre, codigo, precio,stock);
+	this.perGarantia = perGarantia;	
+	this.descripcion = descripcion;
+	}//constructor
 	
-	private int garantia;
+	private int perGarantia;
 	private String descripcion;
 	
 	//getters and setters
-	public int getGarantia() {
-		return garantia;
+	public int getPerGarantia() {
+		return perGarantia;
 	}
-	public void setGarantia(int garantia) {
-		this.garantia = garantia;
+	public void setPerGarantia(int perGarantia) {
+		this.perGarantia = perGarantia;
 	}
 	public String getDescripcion() {
 		return descripcion;

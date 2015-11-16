@@ -5,14 +5,15 @@ public abstract class Producto {
 	private String nombre;
 	private String codigo;
 	private double precio;
-	
+	private int stock;
 	/*Encapsulamiento y
 	constructor*/
-	public Producto(String nombre, String codigo, double precio) {
+	public Producto(String nombre, String codigo, double precio,int stock) {
 		super();
 		this.nombre = nombre;
 		this.codigo = codigo;
 		this.precio = precio;
+		this.stock = stock;
 	}
 	//getters and setters
 	public String getNombre() {
@@ -34,8 +35,11 @@ public abstract class Producto {
 		this.precio = precio;
 	}
 	
-	
-	
-	
-	
+	public int getStock() {
+		return stock;
+	}
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
+
 }//fin de la clase Producto	
