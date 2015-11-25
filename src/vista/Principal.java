@@ -1,70 +1,167 @@
 package vista;
-
+/**
+ * @author Godoy | Lucero
+ * @version 1.0
+ */
 import java.time.LocalDate;
-import java.util.ArrayList;
-
-import modelo.productos.Bazar;
+import java.time.Period;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import modelo.compra.Compra;
 import modelo.productos.Bebida;
-import modelo.productos.CategoriaRopa;
+import modelo.productos.Catalogo;
 import modelo.productos.Comestible;
-import modelo.productos.Electrodomestico;
 import modelo.productos.Producto;
-import modelo.productos.Textil;
-import modelo.productos.TipoBazar;
-import modelo.productos.TipoRopa;
+import controlador.ExceptionProducto;
+import controlador.WriteXMLFile;
 
 public class Principal {
 
 	public static void main(String[] args) {
-//productos Stock
-		ArrayList <Producto> miStock = new ArrayList<Producto>();
-		//Bebidas
-		Bebida bebida1 = new Bebida("CocaCola", "B1", 7.0,40,LocalDate.parse("2015-08-08"), 1.5, true,false);
-		Bebida bebida2 = new Bebida("Fanta", "B2", 6.5,20,LocalDate.parse("2015-09-18"), 1.00, true,false);
-		Bebida bebida3 = new Bebida("Stella Artois", "B3", 25.0,12,LocalDate.parse("2015-06-24"), 970, true,true);
-		//Comestibles
-		Comestible comestible1 = new Comestible("Mayonesa","C1",12.50,30,LocalDate.parse("2014-04-21"),500);
-		Comestible comestible2 = new Comestible("Azúcar","C2",22.00,3,LocalDate.parse("2015-09-11" ),500);
-		Comestible comestible3 = new Comestible("Café","C3",44.50,5,LocalDate.parse("2015-10-28" ),1000);
-		//Textil
-		Textil textil1 = new Textil("Musculosa","T1",125.00,10,"L","Polyester",TipoRopa.REMERA,CategoriaRopa.MUJER);
-		Textil textil2 = new Textil("Bermuda","T2",202.00,20,"XL","Algodón",TipoRopa.PANTALON,CategoriaRopa.HOMBRE);
-		Textil textil3 = new Textil("Medias futbol","T3",44.50,5,"S","Algodón",TipoRopa.MEDIA,CategoriaRopa.CHICOS);
-		//Electrodomesticos
-		Electrodomestico electrodomestico1 = new Electrodomestico("Heladera","E1",4500,7,1,"320 Litros No frost");
-		Electrodomestico electrodomestico2 = new Electrodomestico("Televisor","E2",9999.00,6,2,"Smart TV 40'' 3D incluye lentes");
-		Electrodomestico electrodomestico3 = new Electrodomestico("Microondas","E3",7000.99,3,4,"400 Litros Horno Grill");
-		//Bazar 
-	    Bazar bazar1 = new  Bazar("Platos","B1",555.00,7,"Juego de platos Cuadrados Cereramica",TipoBazar.COCINA);
-	    Bazar bazar2 = new  Bazar("Cortina","B2",67.00,9,"Cortina Baño Tamaño Estándar Diseños Varios" ,TipoBazar.BANIO);
-	    Bazar bazar3 = new  Bazar("Florero","B3",98.00,1,"Florero Vidrio Alto diseño rectangular" ,TipoBazar.HOGAR);
-		
-		
-		miStock.add(bebida1);
-		miStock.add(bebida2);
-		miStock.add(bebida3);
-		miStock.add(comestible1);
-		miStock.add(comestible2);
-		miStock.add(comestible3);
-		miStock.add(textil1);
-		miStock.add(textil2);
-		miStock.add(textil3);
-		miStock.add(electrodomestico1);
-		miStock.add(electrodomestico2);
-		miStock.add(electrodomestico3);
-		miStock.add(bazar1);
-		miStock.add(bazar2);
-		miStock.add(bazar3);
-		//Recorrer el ArrayList (muestra los productos)
-		for(Producto prod: miStock){
-			System.out.println(prod.toString());
-			if(prod instanceof Bebida){
-//				Bebida a = (Bebida) prod;
-//				System.out.println(a.getFechaVencimiento());
-				System.out.println(((Bebida) prod).getFechaVencimiento());
-			}
-		}
-	
-	}//main
 
-}//class
+		// variables
+		boolean comprar = false;
+		Catalogo catalogo = new Catalogo();
+
+		// Compra
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Davinci Market | Servicio de Compras:\nDatos Cliente\nNombre:");
+		String name = sc.nextLine();
+		System.out.println("Apellido:\n\r");
+		String last_name = sc.nextLine();
+		System.out.println("Nº Cliente:");
+		int nroCliente = Integer.parseInt(sc.nextLine());
+		System.out.println("Edad: ");
+		int age = 0;
+		age = getAge(sc);
+		int contador = 0;
+
+		// limite a la cantidad de intentos
+		while (age == -1) {
+			if (contador < 3) {
+				age = getAge(sc);
+			} else {
+				System.out
+						.println("Se han ingresado demasiados valores inválidos.");
+				System.out.println("***FIN DEL PROGRAMA***.");
+				System.exit(0);
+			}
+
+			contador++;
+		}
+
+		System.out.println("Bienvenido :" + name + " " + last_name);
+		
+		// mostrar el catalogo
+		catalogo.imprimirStock();
+
+		// condicion de realización de compra
+		Compra c = new Compra(name, last_name, nroCliente, age, "Efectivo");
+		System.out.println("Realizar compra? y/n");
+		String condicion = sc.nextLine().trim(); 
+		if (condicion.equalsIgnoreCase("y")) {
+			comprar = true;
+			System.out.println("Efectivo (e) / Tarjeta (t)\r");
+			c.setFormaPago(c.checkFormaPago(sc.nextLine()));
+		} else if (condicion.equalsIgnoreCase("n")) {
+			System.out.println("Graciass vuelva prontos | Fin de Programa ");
+			// terminar Ejecución
+			System.exit(0);
+		}
+
+		// while de compra
+		while (comprar) {
+			System.out.println("Ingresa codigo de articulo\r\n");
+			String codigo = sc.nextLine();
+			try {
+				Producto p = catalogo.buscarProducto(codigo);
+
+				// chequea si es bebida, si es alcoholica y la edad del cliente
+				if (p instanceof Bebida && ((Bebida) p).isAlcoholica()
+						&& age < 18) {
+					System.out
+							.println("\n\n*************************************************************");
+					System.out
+							.println("*No está permitido vender bebidas alcoholicas a menores.*");
+					System.out
+							.println("*************************************************************\n\n");
+					continue;
+				}
+
+				if ((p instanceof Bebida || p instanceof Comestible)) {
+
+					LocalDate today = LocalDate.now();
+					LocalDate fechaVenc = (p instanceof Bebida) ? ((Bebida) p)
+							.getFechaVencimiento() : ((Comestible) p)
+							.getFechaVencimiento();
+
+					// calcula la diferencia y la evalua según su fecha de
+					// vencim antes seteada
+					long cantDiasDeVenc = Period.between(fechaVenc, today)
+							.getMonths()
+							* 30
+							+ Period.between(fechaVenc, today).getDays();
+
+					if (cantDiasDeVenc < 5) {
+						System.out
+								.println("\n\n*************************************************************");
+						System.out
+								.println("*Este producto esta próximo a vencer.*");
+						System.out
+								.println("*************************************************************\n\n");
+					}
+
+				}
+
+				System.out.println(p + "\nCantidad:");
+				int cant = Integer.parseInt(sc.nextLine());
+				// agregar producto al carrito
+				c.agregarProd(cant, p);
+
+			} catch (ExceptionProducto e) {
+				System.err.println(e.getMessage());
+				System.out.println("\nProducto " + codigo + " No encontrado");
+			}
+			System.out
+					.println("Agregar otro articulo ? (y) ");
+			condicion = sc.nextLine();
+			if (condicion.equalsIgnoreCase("y")) {
+				comprar = true;
+			} else {
+				comprar = false;
+				System.out.println("Compra finalizada");
+				// imprimir ticket
+				c.imprimirTicket();
+				// guardar xml
+				WriteXMLFile.convertXML(c);
+			}
+		}// fin de while
+		sc.close();
+	}// fin de main
+
+	/**
+	 * Validación Edad del Cliente
+	 * @param scEdad
+	 * @return edad
+	 */
+	static private int getAge(Scanner scEdad) {
+		int age = -1;
+		try {
+			age = Integer.parseInt(scEdad.nextLine());
+			while(age < 1 || age >120){
+				System.out.println("Edad: ");
+				age = Integer.parseInt(scEdad.nextLine());
+			}
+		} catch (InputMismatchException e) {
+			System.out
+					.println("Error, la edad ingresada es inválida. Intente nuevamente");
+		} catch (Exception e) {
+			System.out.println("Error desconocido." + e.getMessage());
+			System.out.println("***FIN DEL PROGRAMA***.");
+			System.exit(1);
+		}
+		
+		return age;
+	}
+
+}//fin de  clase Principal
